@@ -52,7 +52,7 @@ MongoDB >= 6
 
 # Initial Setup
 
-## Step 1: Install Root Dependencies
+## Install Root Dependencies
 
 Run the following command in the project root:
 
@@ -60,26 +60,9 @@ Run the following command in the project root:
 npm install
 ```
 
-This installs root-level packages like:
+This installs root-level packages such as:
 
 - concurrently
-
----
-
-## Step 2: Install All Project Dependencies
-
-Run:
-
-```bash
-npm run install:all
-```
-
-This installs dependencies for:
-
-- Backend
-- Super Admin Frontend
-- Admin Frontend
-- User Frontend
 
 ---
 
@@ -108,6 +91,11 @@ Run:
 ```bash
 npm run dev
 ```
+
+When running this command:
+
+- All frontend and backend dependencies will be installed automatically
+- All servers will start together
 
 This will start:
 
@@ -229,9 +217,9 @@ npm run build:user
 
 # Notes
 
-- All feature flags are organization-specific.
-- Super Admin credentials are configured using environment variables.
-- Ensure MongoDB is running before starting the backend server.
+- All feature flags are organization-specific
+- Super Admin credentials are configured using environment variables
+- Ensure MongoDB is running before starting the backend server
 
 ---
 
@@ -239,7 +227,7 @@ npm run build:user
 
 ## concurrently not recognized
 
-Install dependencies again:
+Run:
 
 ```bash
 npm install
@@ -256,3 +244,29 @@ mongod
 ```
 
 ---
+
+# Available Scripts
+
+```json
+{
+  "install:all": "npm --prefix backend install && npm --prefix frontend-superadmin install && npm --prefix frontend-admin install && npm --prefix frontend-user install",
+
+  "dev:backend": "npm --prefix backend run dev",
+
+  "dev:superadmin": "npm --prefix frontend-superadmin run dev",
+
+  "dev:admin": "npm --prefix frontend-admin run dev",
+
+  "dev:user": "npm --prefix frontend-user run dev",
+
+  "dev": "npm run install:all && concurrently \"npm run dev:backend\" \"npm run dev:superadmin\" \"npm run dev:admin\" \"npm run dev:user\"",
+
+  "build:superadmin": "npm --prefix frontend-superadmin run build",
+
+  "build:admin": "npm --prefix frontend-admin run build",
+
+  "build:user": "npm --prefix frontend-user run build",
+
+  "build": "npm run build:superadmin && npm run build:admin && npm run build:user"
+}
+```
